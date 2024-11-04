@@ -1,5 +1,5 @@
 import unittest
-from statistics_service import StatisticsService
+from statistics_service import StatisticsService, SortBy
 from player import Player
 
 class PlayerReaderStub:
@@ -12,6 +12,7 @@ class PlayerReaderStub:
             Player("Gretzky", "EDM", 35, 89)
         ]
 
+#Only minimum tests to achieve 100% branch coverage
 class TestStatisticsService(unittest.TestCase):
     def setUp(self):
         self.stats = StatisticsService(PlayerReaderStub())
@@ -29,8 +30,29 @@ class TestStatisticsService(unittest.TestCase):
         self.assertEqual(team[1], self.stats._players[2])
         self.assertEqual(team[2], self.stats._players[4])
     
-    def test_top_three(self):
+    def test_top_three_points(self):
         top_three = self.stats.top(3)
+
+        self.assertEqual(top_three[0], self.stats._players[4])
+        self.assertEqual(top_three[1], self.stats._players[1])
+        self.assertEqual(top_three[2], self.stats._players[3])
+    
+    def test_top_three_by_goals(self):
+        top_three = self.stats.top(3, SortBy.GOALS)
+
+        self.assertEqual(top_three[0], self.stats._players[1])
+        self.assertEqual(top_three[1], self.stats._players[3])
+        self.assertEqual(top_three[2], self.stats._players[2])
+    
+    def test_top_three_by_assists(self):
+        top_three = self.stats.top(3, SortBy.ASSISTS)
+
+        self.assertEqual(top_three[0], self.stats._players[4])
+        self.assertEqual(top_three[1], self.stats._players[3])
+        self.assertEqual(top_three[2], self.stats._players[1])
+    
+    def test_top_three_by_else(self):
+        top_three = self.stats.top(3, "improper value")
 
         self.assertEqual(top_three[0], self.stats._players[4])
         self.assertEqual(top_three[1], self.stats._players[1])
