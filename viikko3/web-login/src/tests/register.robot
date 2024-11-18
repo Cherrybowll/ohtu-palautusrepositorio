@@ -47,6 +47,32 @@ Register With Username That Is Already In Use
     Submit Register Form
     Register Should Fail With Message  Username is already taken
 
+Login After Succesful Registration
+    Set Username  kalle
+    Set Password  kalle1234
+    Set Password Confirmation  kalle1234
+    Submit Register Form
+    Register Should Succeed
+    Click Link  Continue to main page
+    Click Button  Logout
+    Go To Login Page
+    Set Username  kalle
+    Set Password  kalle1234
+    Submit Credentials
+    Login Should Succeed
+
+Login After Failed Registration
+    Set Username  kalle
+    Set Password  short
+    Set Password Confirmation  short
+    Submit Register Form
+    Register Should Fail With Message  Password must consist of eight or more characters
+    Go To Login Page
+    Set Username  kalle
+    Set Password  short
+    Submit Credentials
+    Login Should Fail With Message  Invalid username or password
+
 *** Keywords ***
 Register Should Succeed
     Welcome Page Should Be Open
@@ -70,6 +96,17 @@ Set Password Confirmation
 
 Submit Register Form
     Click Button  Register
+
+Submit Credentials
+    Click Button  Login
+
+Login Should Succeed
+    Main Page Should Be Open
+
+Login Should Fail With Message
+    [Arguments]  ${message}
+    Login Page Should Be Open
+    Page Should Contain  ${message}
 
 Reset Application Create User And Go To Register Page
     Reset Application
