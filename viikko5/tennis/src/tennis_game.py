@@ -12,9 +12,6 @@ class TennisGame:
             self.m_score2 = self.m_score2 + 1
 
     def get_score(self):
-        score = ""
-        temp_score = 0
-
         if self.m_score1 >= 4 or self.m_score2 >= 4:
             score_diff = self._score_difference()
 
