@@ -4,6 +4,7 @@ class TennisGame:
         self.player2_name = player2_name
         self.player1_score = 0
         self.player2_score = 0
+        self.DEUCE_THRESHOLD = 3
 
     def won_point(self, player_name):
         if player_name == self.player1_name:
@@ -12,7 +13,7 @@ class TennisGame:
             self.player2_score = self.player2_score + 1
 
     def get_score(self):
-        if self.player1_score >= 4 or self.player2_score >= 4:
+        if self.player1_score > self.DEUCE_THRESHOLD or self.player2_score > self.DEUCE_THRESHOLD:
             score_diff = self._score_difference()
 
             if score_diff == 1:
@@ -28,7 +29,7 @@ class TennisGame:
         player2_score_call = self._score_to_call_before_deuce(self.player2_score)
 
         if self._score_difference() == 0:
-            if self.player1_score > 2:
+            if self.player1_score >= self.DEUCE_THRESHOLD:
                 return "Deuce"
 
             return f"{player1_score_call}-All"
