@@ -2,17 +2,17 @@ class TennisGame:
     def __init__(self, player1_name, player2_name):
         self.player1_name = player1_name
         self.player2_name = player2_name
-        self.m_score1 = 0
-        self.m_score2 = 0
+        self.player1_score = 0
+        self.player2_score = 0
 
     def won_point(self, player_name):
         if player_name == self.player1_name:
-            self.m_score1 = self.m_score1 + 1
+            self.player1_score = self.player1_score + 1
         else:
-            self.m_score2 = self.m_score2 + 1
+            self.player2_score = self.player2_score + 1
 
     def get_score(self):
-        if self.m_score1 >= 4 or self.m_score2 >= 4:
+        if self.player1_score >= 4 or self.player2_score >= 4:
             score_diff = self._score_difference()
 
             if score_diff == 1:
@@ -24,11 +24,11 @@ class TennisGame:
             if score_diff < -1:
                 return f"Win for {self.player2_name}"
 
-        player1_score_call = self._score_to_call_before_deuce(self.m_score1)
-        player2_score_call = self._score_to_call_before_deuce(self.m_score2)
+        player1_score_call = self._score_to_call_before_deuce(self.player1_score)
+        player2_score_call = self._score_to_call_before_deuce(self.player2_score)
 
         if self._score_difference() == 0:
-            if self.m_score1 > 2:
+            if self.player1_score > 2:
                 return "Deuce"
 
             return f"{player1_score_call}-All"
@@ -46,4 +46,4 @@ class TennisGame:
         return score_to_call_dict[score] if score < 4 else None
     
     def _score_difference(self):
-        return self.m_score1-self.m_score2
+        return self.player1_score-self.player2_score
