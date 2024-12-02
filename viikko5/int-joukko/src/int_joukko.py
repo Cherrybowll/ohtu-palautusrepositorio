@@ -1,4 +1,4 @@
-KAPASITEETTI = 5
+OLETUSKAPASITEETTI = 5
 OLETUSKASVATUS = 5
 
 
@@ -7,24 +7,14 @@ class IntJoukko:
     def _luo_lista(self, koko):
         return [0] * koko
     
-    def __init__(self, kapasiteetti=None, kasvatuskoko=None):
-        if kapasiteetti is None:
-            self.kapasiteetti = KAPASITEETTI
-        elif not isinstance(kapasiteetti, int) or kapasiteetti < 0:
-            raise Exception("Väärä kapasiteetti")  # heitin vaan jotain :D
-        else:
-            self.kapasiteetti = kapasiteetti
+    def __init__(self, kapasiteetti=OLETUSKAPASITEETTI, kasvatuskoko=OLETUSKASVATUS):
+        self._validoi_positiivinen_kokonaisluku(kapasiteetti)
+        self._validoi_positiivinen_kokonaisluku(kasvatuskoko)
 
-        if kasvatuskoko is None:
-            self.kasvatuskoko = OLETUSKASVATUS
-        elif not isinstance(kapasiteetti, int) or kapasiteetti < 0:
-            raise Exception("kapasiteetti2")  # heitin vaan jotain :D
-        else:
-            self.kasvatuskoko = kasvatuskoko
-
-        self.ljono = self._luo_lista(self.kapasiteetti)
-
+        self.kapasiteetti = kapasiteetti
+        self.kasvatuskoko = kasvatuskoko
         self.alkioiden_lkm = 0
+        self.ljono = self._luo_lista(self.kapasiteetti)
 
     def kuuluu(self, n):
         for i in range(self.alkioiden_lkm):
@@ -68,6 +58,12 @@ class IntJoukko:
             if n == self.ljono[i]:
                 return i
         return None
+    
+    def _validoi_positiivinen_kokonaisluku(self, n):
+        if not isinstance(n, int):
+            raise TypeError("Arvo ei ole kokonaisluku")
+        if n < 0:
+            raise ValueError("Arvon pitää olla epänegatiivinen")
 
     def kopioi_lista(self, a, b):
         for i in range(len(a)):
