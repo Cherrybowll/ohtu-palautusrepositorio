@@ -34,12 +34,7 @@ class IntJoukko:
     def lisaa(self, n):
         ei_ole = 0
 
-        if self.alkioiden_lkm == 0:
-            self.ljono[0] = n
-            self.alkioiden_lkm = self.alkioiden_lkm + 1
-            return True
-
-        if not self.kuuluu(n):
+        if self.alkioiden_lkm == 0 or not self.kuuluu(n):
             self.ljono[self.alkioiden_lkm] = n
             self.alkioiden_lkm = self.alkioiden_lkm + 1
 
