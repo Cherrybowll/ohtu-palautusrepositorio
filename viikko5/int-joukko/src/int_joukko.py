@@ -27,9 +27,10 @@ class IntJoukko:
         self.alkioiden_lkm = 0
 
     def kuuluu(self, n):
-        for arvo in self.ljono:
-            if n == arvo:
+        for i in range(self.alkioiden_lkm):
+            if n == self.ljono[i]:
                 return True
+        return False
 
     def lisaa(self, n):
         if self.kuuluu(n):
@@ -40,36 +41,36 @@ class IntJoukko:
 
         # ei mahdu enempää, luodaan uusi säilytyspaikka luvuille
         if self.alkioiden_lkm == len(self.ljono):
-            taulukko_old = self.ljono
-            self.kopioi_lista(self.ljono, taulukko_old)
-            self.ljono = self._luo_lista(self.alkioiden_lkm + self.kasvatuskoko)
-            self.kopioi_lista(taulukko_old, self.ljono)
+            uusi_lista = self._luo_lista(self.alkioiden_lkm + self.kasvatuskoko)
+            self.kopioi_lista(self.ljono, uusi_lista)
+            self.ljono = uusi_lista
 
         return True
 
     def poista(self, n):
-        kohta = -1
-        apu = 0
+        apu_indeksi = 0
+        n_indeksi = self._etsi_indeksi(n)
 
-        for i in range(0, self.alkioiden_lkm):
+        if n_indeksi == None:
+            return False
+
+        self.ljono[n_indeksi] = 0
+        for i in range(n_indeksi, self.alkioiden_lkm - 1):
+            apu_indeksi = self.ljono[i]
+            self.ljono[i] = self.ljono[i + 1]
+            self.ljono[i + 1] = apu_indeksi
+
+        self.alkioiden_lkm -= 1
+        return True
+
+    def _etsi_indeksi(self, n):
+        for i in range(self.alkioiden_lkm):
             if n == self.ljono[i]:
-                kohta = i  # siis luku löytyy tuosta kohdasta :D
-                self.ljono[kohta] = 0
-                break
-
-        if kohta != -1:
-            for j in range(kohta, self.alkioiden_lkm - 1):
-                apu = self.ljono[j]
-                self.ljono[j] = self.ljono[j + 1]
-                self.ljono[j + 1] = apu
-
-            self.alkioiden_lkm = self.alkioiden_lkm - 1
-            return True
-
-        return False
+                return i
+        return None
 
     def kopioi_lista(self, a, b):
-        for i in range(0, len(a)):
+        for i in range(len(a)):
             b[i] = a[i]
 
     def mahtavuus(self):
@@ -78,7 +79,7 @@ class IntJoukko:
     def to_int_list(self):
         taulu = self._luo_lista(self.alkioiden_lkm)
 
-        for i in range(0, len(taulu)):
+        for i in range(len(taulu)):
             taulu[i] = self.ljono[i]
 
         return taulu
