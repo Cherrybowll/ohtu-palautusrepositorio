@@ -34,18 +34,20 @@ class IntJoukko:
     def lisaa(self, n):
         ei_ole = 0
 
-        if self.alkioiden_lkm == 0 or not self.kuuluu(n):
-            self.ljono[self.alkioiden_lkm] = n
-            self.alkioiden_lkm = self.alkioiden_lkm + 1
+        if self.kuuluu(n):
+            return False
 
-            # ei mahdu enempää, luodaan uusi säilytyspaikka luvuille
-            if self.alkioiden_lkm % len(self.ljono) == 0:
-                taulukko_old = self.ljono
-                self.kopioi_lista(self.ljono, taulukko_old)
-                self.ljono = self._luo_lista(self.alkioiden_lkm + self.kasvatuskoko)
-                self.kopioi_lista(taulukko_old, self.ljono)
+        self.ljono[self.alkioiden_lkm] = n
+        self.alkioiden_lkm = self.alkioiden_lkm + 1
 
-            return True
+        # ei mahdu enempää, luodaan uusi säilytyspaikka luvuille
+        if self.alkioiden_lkm == len(self.ljono):
+            taulukko_old = self.ljono
+            self.kopioi_lista(self.ljono, taulukko_old)
+            self.ljono = self._luo_lista(self.alkioiden_lkm + self.kasvatuskoko)
+            self.kopioi_lista(taulukko_old, self.ljono)
+
+        return True
 
         return False
 
