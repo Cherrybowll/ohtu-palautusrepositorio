@@ -7,12 +7,17 @@ class TennisGame:
         self.DEUCE_THRESHOLD = 3
 
     def won_point(self, player_name):
-        if player_name == self.player1_name:
-            self.player1_score = self.player1_score + 1
-        else:
-            self.player2_score = self.player2_score + 1
+        match player_name:
+            case self.player1_name:
+                self.player1_score += 1
+            case self.player2_name:
+                self.player2_score += 1
+            case _:
+                pass
 
     def get_score(self):
+        # Still somewhat unclear but I don't have more time to spend on one exercise
+
         if self.player1_score > self.DEUCE_THRESHOLD or self.player2_score > self.DEUCE_THRESHOLD:
             return self._score_to_call_after_deuce()
 
