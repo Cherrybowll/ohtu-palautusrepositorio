@@ -13,12 +13,12 @@ class Kayttoliittyma:
     def __init__(self, sovelluslogiikka, root):
         self._sovelluslogiikka = sovelluslogiikka
         self._root = root
+        self._edellinen_komento = None
 
         self._komennot = {
             Komento.SUMMA: Summa(sovelluslogiikka, self._lue_syote),
             Komento.EROTUS: Erotus(sovelluslogiikka, self._lue_syote),
-            Komento.NOLLAUS: Nollaus(sovelluslogiikka, self._lue_syote),
-            Komento.KUMOA: Kumoa(sovelluslogiikka, self._lue_syote)
+            Komento.NOLLAUS: Nollaus(sovelluslogiikka, self._lue_syote)
         }
 
     def kaynnista(self):
@@ -51,7 +51,7 @@ class Kayttoliittyma:
             master=self._root,
             text="Kumoa",
             state=constants.DISABLED,
-            command=lambda: self._suorita_komento(Komento.KUMOA)
+            command=lambda: self._kumoa()
         )
 
         tulos_teksti.grid(columnspan=4)
@@ -67,7 +67,16 @@ class Kayttoliittyma:
     def _suorita_komento(self, komento):
         komento_olio = self._komennot[komento]
         komento_olio.suorita()
+        self._edellinen_komento = komento_olio
 
+        self._paivita_ui()
+
+    def _kumoa(self):
+        self._edellinen_komento.kumoa()
+
+        self._paivita_ui()
+
+    def _paivita_ui(self):
         self._kumoa_painike["state"] = constants.NORMAL
 
         if self._sovelluslogiikka.arvo() == 0:
@@ -82,40 +91,53 @@ class Summa:
     def __init__(self, sovelluslogiikka, lue):
         self.sovelluslogiikka = sovelluslogiikka
         self.lue = lue
+        self._aiempi_arvo = None
 
     def suorita(self):
         arvo = 0
+        self._aiempi_arvo = self.sovelluslogiikka.arvo()
         try:
             arvo = int(self.lue())
         except Exception:
             pass
         self.sovelluslogiikka.plus(arvo)
 
+    def kumoa(self):
+        valimuisti = self.sovelluslogiikka.arvo()
+        self.sovelluslogiikka.aseta_arvo(self._aiempi_arvo)
+        self._aiempi_arvo = valimuisti
+
 class Erotus:
     def __init__(self, sovelluslogiikka, lue):
         self.sovelluslogiikka = sovelluslogiikka
         self.lue = lue
+        self._aiempi_arvo = None
 
     def suorita(self):
         arvo = 0
+        self._aiempi_arvo = self.sovelluslogiikka.arvo()
         try:
             arvo = int(self.lue())
         except Exception:
             pass
         self.sovelluslogiikka.miinus(arvo)
 
+    def kumoa(self):
+        valimuisti = self.sovelluslogiikka.arvo()
+        self.sovelluslogiikka.aseta_arvo(self._aiempi_arvo)
+        self._aiempi_arvo = valimuisti
+
 class Nollaus:
     def __init__(self, sovelluslogiikka, lue):
         self.sovelluslogiikka = sovelluslogiikka
         self.lue = lue
+        self._aiempi_arvo = None
 
     def suorita(self):
+        self._aiempi_arvo = self.sovelluslogiikka.arvo()
         self.sovelluslogiikka.nollaa()
 
-class Kumoa:
-    def __init__(self, sovelluslogiikka, lue):
-        self.sovelluslogiikka = sovelluslogiikka
-        self.lue = lue
-
-    def suorita(self):
-        self.sovelluslogiikka.plus()
+    def kumoa(self):
+        valimuisti = self.sovelluslogiikka.arvo()
+        self.sovelluslogiikka.aseta_arvo(self._aiempi_arvo)
+        self._aiempi_arvo = valimuisti
