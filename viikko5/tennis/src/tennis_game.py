@@ -14,21 +14,12 @@ class TennisGame:
 
     def get_score(self):
         if self.player1_score > self.DEUCE_THRESHOLD or self.player2_score > self.DEUCE_THRESHOLD:
-            score_diff = self._score_difference()
-
-            if score_diff == 1:
-                return f"Advantage {self.player1_name}"
-            if score_diff == -1:
-                return f"Advantage {self.player2_name}"
-            if score_diff > 1:
-                return f"Win for {self.player1_name}"
-            if score_diff < -1:
-                return f"Win for {self.player2_name}"
+            return self._score_to_call_after_deuce()
 
         player1_score_call = self._score_to_call_before_deuce(self.player1_score)
         player2_score_call = self._score_to_call_before_deuce(self.player2_score)
 
-        if self._score_difference() == 0:
+        if self._get_score_difference() == 0:
             if self.player1_score >= self.DEUCE_THRESHOLD:
                 return "Deuce"
 
@@ -44,7 +35,20 @@ class TennisGame:
             2: "Thirty",
             3: "Forty"
             }
-        return score_to_call_dict[score] if score < 4 else None
+        return score_to_call_dict[score] if score <= self.DEUCE_THRESHOLD else None
     
-    def _score_difference(self):
+    def _score_to_call_after_deuce(self):
+        score_diff = self._get_score_difference()
+
+        if score_diff == 1:
+            return f"Advantage {self.player1_name}"
+        if score_diff == -1:
+            return f"Advantage {self.player2_name}"
+        if score_diff > 1:
+            return f"Win for {self.player1_name}"
+        if score_diff < -1:
+            return f"Win for {self.player2_name}"
+        return "Deuce"
+
+    def _get_score_difference(self):
         return self.player1_score-self.player2_score
