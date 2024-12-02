@@ -32,8 +32,6 @@ class IntJoukko:
                 return True
 
     def lisaa(self, n):
-        ei_ole = 0
-
         if self.kuuluu(n):
             return False
 
@@ -48,8 +46,6 @@ class IntJoukko:
             self.kopioi_lista(taulukko_old, self.ljono)
 
         return True
-
-        return False
 
     def poista(self, n):
         kohta = -1
