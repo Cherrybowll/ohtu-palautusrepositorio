@@ -18,3 +18,6 @@ class QueryBuilder:
     
     def complement_of(self):
         return QueryBuilder(Not(self._query))
+
+    def one_of(self, query1, query2):
+        return QueryBuilder(And(self._query, Or(query1, query2)))
