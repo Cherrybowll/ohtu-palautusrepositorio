@@ -25,7 +25,14 @@ def main():
         .build()
     )
 
-    matcher = query.one_of(m1, m2).build()
+    m3 = (
+        query
+        .plays_in("NYR")
+        .has_fewer_than(1, "points")
+        .build()
+    )
+
+    matcher = query.one_of(m1, m2, m3).build()
 
     for player in stats.matches(matcher):
         print(player)
