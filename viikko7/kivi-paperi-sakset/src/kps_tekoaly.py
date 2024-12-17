@@ -7,4 +7,6 @@ class KPSTekoaly(KiviPaperiSakset):
 
     def _tokan_siirto(self, ekan_siirto):
         self.tekoaly.aseta_siirto(ekan_siirto)
-        return self.tekoaly.anna_siirto()
+        siirto = self.tekoaly.anna_siirto()
+        print(f"Tietokone valitsi: {siirto}")
+        return siirto

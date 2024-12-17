@@ -17,13 +17,11 @@ class KiviPaperiSakset:
             ekan_siirto = input("Ensimmäisen pelaajan siirto: ")
             tokan_siirto = self._tokan_siirto(ekan_siirto)
 
-            print(f"Tietokone valitsi: {tokan_siirto}")
-
         print("Kiitos!")
         print(tuomari)
 
     def _tokan_siirto(self, ekan_siirto):
-        raise Exception("Korvattava metodi")
+        return input("Toisen pelaajan siirto: ")
 
     def _onko_ok_siirto(self, siirto):
         return siirto == "k" or siirto == "p" or siirto == "s"
